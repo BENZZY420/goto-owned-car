@@ -1,0 +1,72 @@
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+
+-- 🌐 Global Settings
+getgenv().TeleportSettings = {
+    Speed = 0.25,    -- Delay before teleport (adjust as needed)
+}
+
+-- ✅ Swim System for Safe Teleportation
+getgenv().SwimMethod = false
+
+local function enableSwimMethod()
+    getgenv().SwimMethod = true
+    task.wait(1) -- Wait 1 second for the effect to take place
+end
+
+local function disableSwimMethod()
+    getgenv().SwimMethod = false
+end
+
+-- 🚀 SwimMethod Teleport Function
+function SwimMethodBypassTeleport(destinationCFrame)
+    local character = player.Character
+    if not character or not character:FindFirstChild("HumanoidRootPart") then return end
+
+    local HRP = character.HumanoidRootPart
+
+    -- Enable SwimMethod before teleporting
+    enableSwimMethod()
+
+    task.wait(getgenv().TeleportSettings.Speed)
+
+    -- Teleport the player
+    HRP.CFrame = destinationCFrame + Vector3.new(2, 0, 0) -- slight offset is optional
+
+    -- Disable SwimMethod shortly after teleport
+    task.delay(0.25, function()
+        disableSwimMethod()
+    end)
+end
+
+-- 📦 Teleport to Owned Car
+local function teleportToOwnedCar()
+    local civCars = workspace:FindFirstChild("CivCars")
+    if not civCars then
+        warn("CivCars folder not found!")
+        return
+    end
+
+    local foundCar = nil
+
+    for _, car in ipairs(civCars:GetChildren()) do
+        if car:IsA("Model") then
+            local ownerTag = car:FindFirstChild("Owner")
+            if ownerTag and ownerTag:IsA("StringValue") and ownerTag.Value == player.Name then
+                foundCar = car
+                break -- Teleport to the first owned car found
+            end
+        end
+    end
+
+    if not foundCar then
+        warn("No owned car found!")
+        return
+    end
+
+    local destination = foundCar:GetModelCFrame() + Vector3.new(0, 5, 0)
+    SwimMethodBypassTeleport(destination)
+end
+
+-- 🚀 Automatically teleport when script runs
+teleportToOwnedCar()
