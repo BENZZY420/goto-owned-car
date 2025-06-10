@@ -60,8 +60,6 @@ local function teleportToOwnedCar()
 
     local destination = foundCar:GetModelCFrame() + Vector3.new(0, 5, 0)
     SwimMethodBypassTeleport(destination)
-
-    Library:Notify("✅ Successfully unlocked all cars", 5)
 end
 
 -- 🚀 Automatically teleport when script runs
