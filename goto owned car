@@ -3,7 +3,7 @@ local player = Players.LocalPlayer
 
 -- 🌐 Global Settings
 getgenv().TeleportSettings = {
-    Speed = 0.25,    -- Delay before teleport (adjust as needed)
+    Speed = 0.25, -- Delay before teleport (adjust as needed)
 }
 
 -- ✅ Swim System for Safe Teleportation
@@ -60,7 +60,11 @@ local function teleportToOwnedCar()
     end
 
     if not foundCar then
-        warn("No owned car found!")
+        if notifyLibrary and notifyLibrary.Notify then
+            notifyLibrary:Notify("🚫 You don't have a car spawned", 5)
+        else
+            warn("notifyLibrary not found or not set up properly.")
+        end
         return
     end
 
