@@ -11,7 +11,7 @@ getgenv().SwimMethod = false
 
 local function enableSwimMethod()
     getgenv().SwimMethod = true
-    task.wait(1) -- Wait 1 second for the effect to take place
+    task.wait(1)
 end
 
 local function disableSwimMethod()
@@ -25,15 +25,9 @@ function SwimMethodBypassTeleport(destinationCFrame)
 
     local HRP = character.HumanoidRootPart
 
-    -- Enable SwimMethod before teleporting
     enableSwimMethod()
-
     task.wait(getgenv().TeleportSettings.Speed)
-
-    -- Teleport the player
-    HRP.CFrame = destinationCFrame + Vector3.new(2, 0, 0) -- slight offset is optional
-
-    -- Disable SwimMethod shortly after teleport
+    HRP.CFrame = destinationCFrame + Vector3.new(2, 0, 0)
     task.delay(0.25, function()
         disableSwimMethod()
     end)
@@ -54,22 +48,28 @@ local function teleportToOwnedCar()
             local ownerTag = car:FindFirstChild("Owner")
             if ownerTag and ownerTag:IsA("StringValue") and ownerTag.Value == player.Name then
                 foundCar = car
-                break -- Teleport to the first owned car found
+                break
             end
         end
     end
 
     if not foundCar then
-        if notifyLibrary and notifyLibrary.Notify then
-            notifyLibrary:Notify("🚫 You don't have a car spawned", 5)
-        else
-            warn("notifyLibrary not found or not set up properly.")
-        end
+        Library:Notify({
+            Title = "🚫 No Car Found",
+            Description = "You don't have a car spawned.",
+            Time = 5
+        })
         return
     end
 
     local destination = foundCar:GetModelCFrame() + Vector3.new(0, 5, 0)
     SwimMethodBypassTeleport(destination)
+
+    Library:Notify({
+        Title = "✅ Successfully unlocked all cars",
+        Description = "You have been teleported to your vehicle.",
+        Time = 5
+    })
 end
 
 -- 🚀 Automatically teleport when script runs
