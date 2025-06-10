@@ -54,22 +54,14 @@ local function teleportToOwnedCar()
     end
 
     if not foundCar then
-        Library:Notify({
-            Title = "🚫 No Car Found",
-            Description = "You don't have a car spawned.",
-            Time = 5
-        })
+        Library:Notify("🚫 You don't have a car spawned.", 5)
         return
     end
 
     local destination = foundCar:GetModelCFrame() + Vector3.new(0, 5, 0)
     SwimMethodBypassTeleport(destination)
 
-    Library:Notify({
-        Title = "✅ Successfully unlocked all cars",
-        Description = "You have been teleported to your vehicle.",
-        Time = 5
-    })
+    Library:Notify("✅ Successfully unlocked all cars", 5)
 end
 
 -- 🚀 Automatically teleport when script runs
