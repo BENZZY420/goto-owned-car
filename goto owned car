@@ -1,3 +1,6 @@
+-- ⬅️ This line makes sure Library is pulled in
+local Library = getgenv().Library
+
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
 
@@ -54,7 +57,11 @@ local function teleportToOwnedCar()
     end
 
     if not foundCar then
-        Library:Notify("🚫 You don't have a car spawned.", 5)
+        if Library then
+            Library:Notify("🚫 You don't have a car spawned.", 5)
+        else
+            warn("Library not found for notification.")
+        end
         return
     end
 
