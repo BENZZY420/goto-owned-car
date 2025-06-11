@@ -57,7 +57,7 @@ local function teleportToOwnedCar()
     end
 
     if not foundCar then
-        if Library then
+        if Library and Library.Notify then
             Library:Notify("🚫 You don't have a car spawned.", 5)
         else
             warn("Library not found for notification.")
