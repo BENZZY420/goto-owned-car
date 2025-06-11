@@ -57,11 +57,13 @@ local function teleportToOwnedCar()
     end
 
     if not foundCar then
-        if Library and Library.Notify then
-            Library:Notify("🚫 You don't have a car spawned.", 5)
-        else
-            warn("Library not found for notification.")
-        end
+        local Notification = loadstring(game:HttpGet("https://api.irisapp.ca/Scripts/IrisBetterNotifications.lua"))()
+        Notification.Notify("From snippet.cc", "🚫 You don't have a car spawned.", "Snippet", {
+            Duration = 5,
+            Main = {
+                Rounding = true,
+            }
+        })
         return
     end
 
